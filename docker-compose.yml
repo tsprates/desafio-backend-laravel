@@ -22,20 +22,16 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env.laravel
-    working_dir: /var/www/html
     ports:
       - 80:80
+    working_dir: /var/www/html
+    volumes:
+      - ./api:/var/www/html
     depends_on:
      - db
      - redis
-    volumes:
-      - ./api:/var/www/html
-      - ./supervisord.conf:/etc/supervisor/supervisord.conf
     networks:
       - app
-    depends_on:
-      - db
-      - redis
   redis:
     container_name: redis
     image: redis:7.0
