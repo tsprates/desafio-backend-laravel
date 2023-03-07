@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.1"
 
 services:
   db:
@@ -15,16 +15,6 @@ services:
       - 5432:5432
     networks:
       - app
-  web:
-    container_name: web
-    image: nginx:stable-alpine
-    volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf
-      - ./api:/var/www/html
-    ports:
-      - 80:80
-    networks:
-      - app
   php:
     container_name: php
     build:
@@ -33,14 +23,19 @@ services:
     env_file:
       - .env.laravel
     working_dir: /var/www/html
-    restart: always
+    ports:
+      - 80:80
+    depends_on:
+     - db
+     - redis
     volumes:
       - ./api:/var/www/html
       - ./supervisord.conf:/etc/supervisor/supervisord.conf
-    depends_on:
-      - web
     networks:
       - app
+    depends_on:
+      - db
+      - redis
   redis:
     container_name: redis
     image: redis:7.0
