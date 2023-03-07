@@ -51,7 +51,10 @@ class PacientesController extends Controller
         $endereco->paciente_id = $paciente->id;
         $endereco->save();
 
-        return response()->json(['status' => true], Response::HTTP_CREATED);
+        return response()->json([
+            'status' => true,
+            'data' => [...$paciente->toArray(), ...$endereco->toArray()],
+        ], Response::HTTP_CREATED);
     }
 
     public function show(int $id)
@@ -90,7 +93,10 @@ class PacientesController extends Controller
         $endereco->paciente_id = $paciente->id;
         $endereco->save();
 
-        return response()->json(['status' => true]);
+        return response()->json([
+            'status' => true,
+            'data' => [...$paciente->toArray(), ...$endereco->toArray()],
+        ]);
     }
 
     public function destroy(Paciente $paciente)
