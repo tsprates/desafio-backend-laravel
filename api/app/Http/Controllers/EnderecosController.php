@@ -14,12 +14,15 @@ class EnderecosController extends Controller
     public function index(Request $request)
     {
         $cep = preg_replace('/[^0-9]/', '', $request->input('cep'));
+
         if (Cache::has($cep)) {
             return Cache::get($cep);
         }
+
         $url = sprintf('viacep.com.br/ws/%s/json/', $cep);
-        $json = Http::get($url)->json();
-        Cache::set($cep, $json);
-        return $json;
+        $result = Http::get($url)->json();
+        Cache::put($cep, $result);
+
+        return $result;
     }
 }

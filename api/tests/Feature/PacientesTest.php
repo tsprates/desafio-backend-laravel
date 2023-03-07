@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Endereco;
 use App\Models\Paciente;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -53,7 +52,7 @@ class PacientesTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonPath('data.nome_completo', 'test user');
     }
-    
+
     public function test_tenta_criar_paciente_com_cpf_invalido()
     {
         $pacienteArray = Paciente::factory()
@@ -68,7 +67,7 @@ class PacientesTest extends TestCase
         $response->assertStatus(422)
             ->assertJson(['status' => false]);
     }
-    
+
     public function test_tenta_criar_paciente_com_cns_invalido()
     {
         $pacienteArray = Paciente::factory()
