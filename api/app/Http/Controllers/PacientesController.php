@@ -28,7 +28,11 @@ class PacientesController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+
         $paciente = new Paciente();
+        if ($request->file('foto')) {
+            $paciente->foto = $request->file('foto')->store('public/images/');
+        }
         $paciente->nome_completo = $request->input('nome_completo');
         $paciente->nome_completo_mae = $request->input('nome_completo_mae');
         $paciente->data_nascimento = $request->input('data_nascimento');
@@ -65,6 +69,9 @@ class PacientesController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        if ($request->file('foto')) {
+            $paciente->foto = $request->file('foto')->store('public/images/');
+        }
         $paciente->nome_completo = $request->input('nome_completo');
         $paciente->nome_completo_mae = $request->input('nome_completo_mae');
         $paciente->data_nascimento = $request->input('data_nascimento');
