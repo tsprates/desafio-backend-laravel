@@ -25,3 +25,5 @@ Route::resource('pacientes', PacientesController::class);
 Route::middleware('throttle:60,1')->group(function () {
     Route::get('cep', [EnderecosController::class, 'index']);
 });
+
+Route::post('import', [PacientesController::class, 'import']);

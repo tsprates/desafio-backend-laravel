@@ -84,8 +84,13 @@ class PacientesController extends Controller
 
     public function import(Request $request)
     {
-        $csvFile = $request->file('csv')->store('public/csv/');
-        ImportaPacientesCsv::dispatch($csvFile);
-        return ['status' => true, 'data' => $csvFile];
+        if (!$request->file('arquivo')) {
+            return response()
+                ->json(['status' => false, 'data' => 'csv não encontrado'], 400);
+        }
+        
+        $path = Storage::put('public/csv', $request->file('arquivo'));
+        dispatch(new ImportaPacientesCsv(basename($path)));
+        return response()->json(['status' => true]);
     }
 }
