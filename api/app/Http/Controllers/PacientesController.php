@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PacienteRequest;
 use App\Http\Requests\StorePacienteRequest;
 use App\Http\Requests\UpdatePacienteRequest;
+use App\Jobs\ImportaPacientesCsv;
 use App\Models\Endereco;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,28 +30,13 @@ class PacientesController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-
-        $paciente = new Paciente();
+        $data = $request->all();
         if ($request->file('foto')) {
-            $paciente->foto = $request->file('foto')->store('public/images/');
+            $data['foto'] = $request->file('foto')->store('public/images/');
         }
-        $paciente->nome_completo = $request->input('nome_completo');
-        $paciente->nome_completo_mae = $request->input('nome_completo_mae');
-        $paciente->data_nascimento = $request->input('data_nascimento');
-        $paciente->cpf = $request->input('cpf');
-        $paciente->cns = $request->input('cns');
-        $paciente->save();
 
-        $endereco = new Endereco();
-        $endereco->cep = $request->input('cep');
-        $endereco->endereco = $request->input('endereco');
-        $endereco->numero = $request->input('numero');
-        $endereco->bairro = $request->input('bairro');
-        $endereco->complemento = $request->input('complemento');
-        $endereco->cidade = $request->input('cidade');
-        $endereco->estado = $request->input('estado');
-        $endereco->paciente_id = $paciente->id;
-        $endereco->save();
+        $paciente = Paciente::create($data);
+        $endereco = $paciente->endereco()->create($data);
 
         return response()->json([
             'status' => true,
@@ -72,30 +59,17 @@ class PacientesController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $data = $request->all();
         if ($request->file('foto')) {
-            $paciente->foto = $request->file('foto')->store('public/images/');
+            $data['foto'] = $request->file('foto')->store('public/images/');
         }
-        $paciente->nome_completo = $request->input('nome_completo');
-        $paciente->nome_completo_mae = $request->input('nome_completo_mae');
-        $paciente->data_nascimento = $request->input('data_nascimento');
-        $paciente->cpf = $request->input('cpf');
-        $paciente->cns = $request->input('cns');
-        $paciente->save();
 
-        $endereco = $paciente->endereco()->first();
-        $endereco->cep = $request->input('cep');
-        $endereco->endereco = $request->input('endereco');
-        $endereco->numero = $request->input('numero');
-        $endereco->bairro = $request->input('bairro');
-        $endereco->complemento = $request->input('complemento');
-        $endereco->cidade = $request->input('cidade');
-        $endereco->estado = $request->input('estado');
-        $endereco->paciente_id = $paciente->id;
-        $endereco->save();
+        $paciente->update($data);
+        $paciente->endereco->update($data);
 
         return response()->json([
             'status' => true,
-            'data' => [...$paciente->toArray(), ...$endereco->toArray()],
+            'data' => [...$paciente->toArray(), ...$paciente->endereco->toArray()],
         ]);
     }
 
@@ -105,5 +79,12 @@ class PacientesController extends Controller
             return response()->json(['status' => true]);
         }
         return response()->json(['status' => false], Response::HTTP_BAD_REQUEST);
+    }
+
+    public function import(Request $request)
+    {
+        $csvFile = $request->file('csv')->store('public/csv/');
+        ImportaPacientesCsv::dispatch($csvFile);
+        return ['status' => true, 'data' => $csvFile];
     }
 }
