@@ -19,6 +19,3 @@ RUN docker-php-ext-install pdo pdo_pgsql
 
 # redis
 RUN pecl install redis && docker-php-ext-enable redis
-
-# supervisor
-RUN supervisord -c /etc/supervisor/supervisord.conf
