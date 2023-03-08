@@ -61,6 +61,7 @@ class PacientesController extends Controller
 
         $data = $request->all();
         if ($request->file('foto')) {
+            Storage::delete($paciente->foto);
             $data['foto'] = $request->file('foto')->store('public/images/');
         }
 
