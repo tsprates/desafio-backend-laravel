@@ -64,7 +64,7 @@ services:
     ports:
       - 9200:9200
     volumes:
-      - ./data/elastic:/usr/share/elasticsearch/data
+      - ./elasticsearch:/usr/share/elasticsearch/data
     networks:
       - app
 
