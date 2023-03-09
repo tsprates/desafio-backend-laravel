@@ -3,21 +3,20 @@
 namespace App\Observers;
 
 use App\Models\Paciente;
-use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
 
 class PacienteObserver
 {
-    private static function elasticsearchClient()
+    private $elasticsearchClient;
+
+    public function __construct(Client $elasticsearchClient)
     {
-        return ClientBuilder::create()
-            ->setHosts([env('ELASTICSEARCH_HOST')])
-            ->setBasicAuthentication(env('ELASTICSEARCH_USER', 'elastic'), env('ELASTICSEARCH_PASSWORD', 'changeme'))
-            ->build();
+        $this->elasticsearchClient = $elasticsearchClient;
     }
 
     public function created(Paciente $paciente): void
     {
-        self::elasticsearchClient()->index([
+        $this->elasticsearchClient->index([
             'index' => $paciente->getTable(),
             'type' => '_doc',
             'id' => $paciente->id,
@@ -27,7 +26,7 @@ class PacienteObserver
 
     public function updated(Paciente $paciente): void
     {
-        self::elasticsearchClient()->update([
+        $this->elasticsearchClient->update([
             'index' => $paciente->getTable(),
             'type' => '_doc',
             'id' => $paciente->id,
@@ -37,7 +36,7 @@ class PacienteObserver
 
     public function deleted(Paciente $paciente): void
     {
-        self::elasticsearchClient()->index([
+        $this->elasticsearchClient->index([
             'index' => $paciente->getTable(),
             'id' => $paciente->id,
         ]);
