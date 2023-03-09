@@ -6,8 +6,10 @@ use App\Http\Requests\PacienteRequest;
 use App\Http\Requests\StorePacienteRequest;
 use App\Http\Requests\UpdatePacienteRequest;
 use App\Jobs\ImportaPacientesCsv;
-use App\Models\Endereco;
 use App\Models\Paciente;
+use Elastic\Elasticsearch\Client;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -82,15 +84,41 @@ class PacientesController extends Controller
         return response()->json(['status' => false], Response::HTTP_BAD_REQUEST);
     }
 
-    public function import(Request $request)
+    /**
+     * Importa o arquivo CSV de pacientes.
+     */
+    public function importCsv(Request $request)
     {
         if (!$request->file('arquivo')) {
             return response()
                 ->json(['status' => false, 'data' => 'csv não encontrado'], 400);
         }
-        
+
         $path = Storage::put('public/csv', $request->file('arquivo'));
+
         dispatch(new ImportaPacientesCsv(basename($path)));
+
         return response()->json(['status' => true]);
+    }
+
+    public function search(Client $elasticsearchClient, string $query)
+    {
+        $result = $elasticsearchClient->search([
+            'index' => 'pacientes',
+            'type' => '_doc',
+            'body' => [
+                'query' => [
+                    'multi_match' => [
+                        'fields' => ['nome_completo', 'nome_completo_mae', 'cpf', 'cns'],
+                        'query' => $query,
+                    ],
+                ],
+            ],
+        ])->asArray();
+
+        if ($result['hits']['total']['value'] === 0) {
+            return [];
+        }
+        return array_column($result['hits']['hits'], '_source');
     }
 }
