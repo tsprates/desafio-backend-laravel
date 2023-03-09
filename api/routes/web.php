@@ -1,7 +1,5 @@
 <?php
 
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\ClientInterface;
 use Illuminate\Support\Facades\Route;
 
 /*
