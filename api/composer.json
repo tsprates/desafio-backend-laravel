@@ -13,7 +13,8 @@
         "laravel/horizon": "^5.14",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravellegends/pt-br-validator": "^10.0"
+        "laravellegends/pt-br-validator": "^10.0",
+        "league/csv": "^9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
