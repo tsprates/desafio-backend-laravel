@@ -17,7 +17,7 @@ class EnderecoFactory extends Factory
             'cep' => $this->faker->postcode(),
             'endereco' => $this->faker->streetAddress(),
             'numero' => $this->faker->buildingNumber(),
-            'bairro' => '',
+            'bairro' => $this->faker->name(),
             'complemento' => $this->faker->secondaryAddress(),
             'cidade' => $this->faker->city(),
             'estado' => $this->faker->stateAbbr(),
