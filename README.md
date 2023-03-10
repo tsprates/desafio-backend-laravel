@@ -6,7 +6,7 @@
 docker-compose up --build
 ```
 
-> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do `Laravel`.
+> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do `Laravel`. O arquivo de configuração do se encontra na raiz do projecto `.env.laravel`.
 
 Para realizar a instalação de dependencias do _Laravel_ utilize o seguinte comando:
 
@@ -21,22 +21,6 @@ docker-compose exec -it php artisan migrate
 ```
 
 > **Observação**: Os arquivos de configurações dos serviços _NGINX_ e _Supervisor_ podem encontrados na pasta `conf` na raiz do projeto.
-
-### Supervisor
-
-Para iniciar o _Supervisor_, entre no container `php`:
-
-```sh
-docker-compose exec -it php php bash
-```
-
-E atualize o _Supervisor_:
-
-```sh
-supervisorctl reread
-supervisorctl update
-supervisorctl start all
-```
 
 ### Pacientes
 

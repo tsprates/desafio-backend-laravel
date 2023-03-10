@@ -20,9 +20,12 @@ RUN docker-php-ext-install pdo pdo_pgsql
 # redis
 RUN pecl install redis && docker-php-ext-enable redis
 
-# php gd    
+# php-gd    
 RUN apt-get install -y libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
+
+# start supervisor and php-fpm
+CMD supervisord -c /etc/supervisor/supervisord.conf && php-fpm
