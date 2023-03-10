@@ -33,7 +33,7 @@ class ImportaPacientesCsv implements ShouldQueue
             $header = array_map('trim', $csv->getHeader());
 
             $rules = (new StorePacienteRequest())->rules();
-            
+
             // TODO:
             unset($rules['foto']);
 
@@ -45,7 +45,7 @@ class ImportaPacientesCsv implements ShouldQueue
                     Log::info(json_encode([$record, $validator->errors()]));
                     continue;
                 }
-                
+
                 $paciente = Paciente::create($input);
                 $paciente->endereco()->create($input);
             }

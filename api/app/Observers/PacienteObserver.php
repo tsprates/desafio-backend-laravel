@@ -18,7 +18,7 @@ class PacienteObserver
     {
         $this->elasticsearchClient->index([
             'index' => $paciente->getTable(),
-            'type' => '_doc',
+            'type' => env('ELASTICSEARCH_TYPE'),
             'id' => $paciente->id,
             'body' => $paciente->toJson(),
         ]);
@@ -28,7 +28,7 @@ class PacienteObserver
     {
         $this->elasticsearchClient->update([
             'index' => $paciente->getTable(),
-            'type' => '_doc',
+            'type' => env('ELASTICSEARCH_TYPE'),
             'id' => $paciente->id,
             'body' => $paciente->toJson(),
         ]);
