@@ -84,6 +84,19 @@ class PacientesController extends Controller
         return response()->json(['status' => false], Response::HTTP_BAD_REQUEST);
     }
 
+    public function getByCpf(Request $request)
+    {
+        $cpf = $request->get('cpf');
+
+        if (preg_match('/^[0-9]{11}$/', $cpf)) {
+            $cpf = preg_replace('/([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})/', '\1.\2.\3-\4', $cpf);
+        }
+
+        return Paciente::with('endereco')
+            ->where('cpf', $cpf)
+            ->get();
+    }
+
     /**
      * Importa o arquivo CSV de pacientes.
      */

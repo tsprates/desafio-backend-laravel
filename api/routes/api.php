@@ -26,6 +26,8 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::get('cep', [EnderecosController::class, 'index']);
 });
 
+Route::get('cpf', [PacientesController::class, 'getByCpf']);
+
 Route::post('import', [PacientesController::class, 'importCsv']);
 
 Route::get('search/{query}', [PacientesController::class, 'search']);
