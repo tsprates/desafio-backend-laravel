@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Endereco;
 use App\Models\Paciente;
+use App\Observers\EnderecoObserver;
 use App\Observers\PacienteObserver;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
@@ -19,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(Client::class, function () {
             return ClientBuilder::create()
-                ->setHosts([env('ELASTICSEARCH_HOST')])
+                ->setHosts([env('ELASTICSEARCH_HOST', 'localhost:9200')])
                 ->setBasicAuthentication(env('ELASTICSEARCH_USER', 'elastic'), env('ELASTICSEARCH_PASSWORD', 'changeme'))
                 ->build();
         });
@@ -33,5 +35,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paciente::observe(PacienteObserver::class);
+        Endereco::observe(EnderecoObserver::class);
     }
 }
