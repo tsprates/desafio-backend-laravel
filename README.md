@@ -55,7 +55,7 @@ curl -X POST -F 'arquivo=@exemplo.json' http://localhost/api/cpf?cpf=12345678900
 
 > **Observação**: O arquivo `exemplo.json` é um arquivo de exemplo de pacientes.
 
-# CPF
+### Consulta de CPF
 
 Para realizar consultads de determinado CPF, utilize o seguinte endpoint:
 
