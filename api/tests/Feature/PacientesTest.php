@@ -13,6 +13,14 @@ class PacientesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Paciente::unsetEventDispatcher();
+        Endereco::unsetEventDispatcher();
+    }
+
     public function test_estrutura_da_lista_de_pacientes()
     {
         $response = $this->get('api/pacientes');
