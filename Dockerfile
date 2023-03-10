@@ -27,5 +27,5 @@ RUN apt-get install -y libfreetype6-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
-# start supervisor and php-fpm
-CMD supervisord -c /etc/supervisor/supervisord.conf && php-fpm
+# entry supervisor and php-fpm
+ENTRYPOINT supervisord -c /etc/supervisor/supervisord.conf && php-fpm

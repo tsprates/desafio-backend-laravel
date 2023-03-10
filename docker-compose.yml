@@ -32,9 +32,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    working_dir: /var/www/html
     env_file:
       - .env.laravel
-    working_dir: /var/www/html
     volumes:
       - ./api:/var/www/html
       - ./conf/horizon.conf:/etc/supervisor/conf.d/horizon.conf
