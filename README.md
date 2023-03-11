@@ -8,7 +8,7 @@ docker-compose up --build
 
 > **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do _Laravel_. O arquivo de _variáveis de ambiente_ do Laravel se encontra na raiz do projecto em `.env.laravel`.
 
-Para realizar a instalação de dependencias do _Laravel_ utilize o seguinte comando:
+Para realizar a instalação das dependencias do _Laravel_ utilize o seguinte comando:
 
 ```sh
 docker-compose exec -it php artisan composer install
