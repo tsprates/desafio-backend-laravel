@@ -14,13 +14,23 @@ class EnderecoObserver
         $this->elasticsearchClient = $elasticsearchClient;
     }
 
-    public function saved(Endereco $endereco): void
+    public function created(Endereco $endereco)
     {
         $this->elasticsearchClient->index([
             'index' => $endereco->paciente->getTable(),
             'type' => env('ELASTICSEARCH_TYPE'),
             'id' => $endereco->paciente_id,
-            'body' => json_encode([...$endereco->paciente()->get()->toArray(), ...$endereco->toArray()]),
+            'body' => json_encode([...$endereco->paciente->toArray(), ...$endereco->first()->toArray()]),
+        ]);
+    }
+
+    public function updated(Endereco $endereco)
+    {
+        $this->elasticsearchClient->index([
+            'index' => $endereco->paciente->getTable(),
+            'type' => env('ELASTICSEARCH_TYPE'),
+            'id' => $endereco->paciente_id,
+            'body' => json_encode([...$endereco->paciente->toArray(), ...$endereco->first()->toArray()]),
         ]);
     }
 }

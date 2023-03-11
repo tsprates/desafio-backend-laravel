@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Paciente;
 use Elastic\Elasticsearch\Client;
+use Illuminate\Support\Facades\Log;
 
 class PacienteObserver
 {
@@ -14,27 +15,18 @@ class PacienteObserver
         $this->elasticsearchClient = $elasticsearchClient;
     }
 
-    public function created(Paciente $paciente): void
+    public function updated(Paciente $paciente)
     {
-        $this->elasticsearchClient->index([
-            'index' => $paciente->getTable(),
-            'type' => env('ELASTICSEARCH_TYPE'),
-            'id' => $paciente->id,
-            'body' => $paciente->toJson(),
-        ]);
-    }
 
-    public function updated(Paciente $paciente): void
-    {
         $this->elasticsearchClient->update([
             'index' => $paciente->getTable(),
             'type' => env('ELASTICSEARCH_TYPE'),
             'id' => $paciente->id,
-            'body' => $paciente->toJson(),
+            'body' => json_encode([...$paciente->toArray(), ...$paciente->endereco->toArray()]),
         ]);
     }
 
-    public function deleted(Paciente $paciente): void
+    public function deleted(Paciente $paciente)
     {
         $this->elasticsearchClient->delete([
             'index' => $paciente->getTable(),
