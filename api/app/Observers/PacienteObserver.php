@@ -36,7 +36,7 @@ class PacienteObserver
 
     public function deleted(Paciente $paciente): void
     {
-        $this->elasticsearchClient->index([
+        $this->elasticsearchClient->delete([
             'index' => $paciente->getTable(),
             'id' => $paciente->id,
         ]);
