@@ -28,5 +28,5 @@ RUN apk add --no-cache --update zlib-dev libjpeg-turbo-dev libpng-dev freetype-d
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
-# start supervisor and php-gd
-ENTRYPOINT supervisord -c /etc/supervisor/supervisord.conf && php-fpm -R -Fgit
+# start supervisor and php-fpm
+ENTRYPOINT supervisord -c /etc/supervisor/supervisord.conf && php-fpm -R -F
