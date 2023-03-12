@@ -8,26 +8,26 @@ Use o seguinte comando para fazer a instalação da aplicação:
 docker-compose up --build
 ```
 
-> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do _Laravel_ através do **composer**. As variáveis de ambiente do Laravel podem ser alteradas através do arquivo `.env.laravel` que se encontram na raiz do projeto.
+> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do _Laravel_ através do **composer**. Variáveis de ambiente do Laravel podem ser alteradas através do arquivo `.env.laravel` que se encontram na raiz do projeto.
 
 
-Caso precise realizar a instalação das dependencias do _Laravel_, use o seguinte comando:
+Para realizar a instalação das dependencias do _Laravel_, utilize o seguinte comando:
 
 ```sh
 docker-compose exec -it php composer install
 ```
 
-E realize a migração das tabelas utilizadas pelo _PostgreSQL_:
+E o seguinte comando para migração das tabelas utilizadas pelo _PostgreSQL_:
 
 ```sh
 docker-compose exec -it php php artisan migrate
 ```
 
-> **Observação**: Arquivos de configurações dos serviços **Supervisor** e **NGINX** podem ser encontradas na raiz do projeto, dentro da pasta `conf`.
+> **Observação**: Os arquivos de configurações do **supervisor** e **NGINX** podem ser encontradas na raiz do projeto, dentro da pasta `conf`.
 
 ### API de Pacientes
 
-Os dados do paciente podem ser **criados**, **alterados** e **deletados** utilizando a seguinte API:
+Os dados do paciente podem ser _criados_, _alterados_ e _deletados_ através da seguinte URL:
 
 ```
 http://localhost/api/pacientes
@@ -39,21 +39,21 @@ E o seguinte comando para realizar a importação de pacientes:
 curl -X POST -F 'arquivo=@exemplo.json' http://localhost/api/cpf?cpf=12345678900
 ```
 
-> **Observação**: O arquivo `exemplo.json` é um arquivo de exemplo para importação de pacientes.
+> **Observação**: `exemplo.json` é um arquivo de exemplo para importação de pacientes.
 
 ### Consulta de CPF
 
-Para realizar consultads de determinado CPF, utilize a seguinte URL:
+Para realizar uma consultada de determinado CPF, utilize a seguinte URL:
 
 ```sh
 curl http://localhost/api/cpf?cpf=123.456.789-00
 ```
 
-> **Observação**: A formatacão é _opcional_.
+> **Observação**: A formatacão com pontuação do CPF é _opcional_.
 
 ### ViaCep
 
-Para consultar determinado CEP, utilize a seguinte URL.
+Para consultar determinado CEP, utilize a seguinte URL com o CEP procurado:
 
 ```sh
 curl http://localhost/api/cep?cep=01001000
@@ -78,7 +78,7 @@ Exemplo:
 
 ### Elasticsearch
 
-Para realizar buscas no _Elasticsearch_ é necessário utilizar a seguinte URL. O `{termo}` deve ser alterado para o item buscado.
+Para realizar buscas no _Elasticsearch_ é necessário utilizar a seguinte URL. O `{termo}` na URL deve ser substituído com termo a ser buscado.
 
 ```sh
 curl http://localhost/api/search/{texto}
@@ -86,7 +86,7 @@ curl http://localhost/api/search/{texto}
 
 ### Testes
 
-Para executar testes da aplicacão:
+Para realização dos testes utilize:
 
 ```sh
 docker-compose exec -it php php artisan test
