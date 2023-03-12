@@ -14,13 +14,13 @@ docker-compose up --build
 Caso precise realizar a instalação das dependencias do _Laravel_, use o seguinte comando:
 
 ```sh
-docker-compose exec -it php artisan composer install
+docker-compose exec -it php composer install
 ```
 
 E realize a migração das tabelas utilizadas pelo _PostgreSQL_:
 
 ```sh
-docker-compose exec -it php artisan migrate
+docker-compose exec -it php php artisan migrate
 ```
 
 > **Observação**: Arquivos de configurações dos serviços **Supervisor** e **NGINX** podem ser encontradas na raiz do projeto, dentro da pasta `conf`.
