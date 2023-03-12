@@ -1,7 +1,10 @@
-FROM php:8.1-fpm
+FROM php:8.1-fpm-alpine
+
+RUN mkdir -p /var/log/supervisor/
 
 # dependencies
-RUN apt-get update && apt-get install -y git \
+RUN apk update && apk add --no-cache $PHPIZE_DEPS \
+    git \
     zip \
     libpq-dev \
     supervisor
@@ -21,11 +24,9 @@ RUN docker-php-ext-install pdo pdo_pgsql
 RUN pecl install redis && docker-php-ext-enable redis
 
 # php-gd    
-RUN apt-get install -y libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
+RUN apk add --no-cache --update zlib-dev libjpeg-turbo-dev libpng-dev freetype-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
-# entry supervisor and php-fpm
-ENTRYPOINT supervisord -c /etc/supervisor/supervisord.conf && php-fpm
+# start supervisor and php-gd
+ENTRYPOINT supervisord -c /etc/supervisor/supervisord.conf && php-fpm -R -Fgit
