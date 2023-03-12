@@ -24,7 +24,7 @@ RUN docker-php-ext-install pdo pdo_pgsql
 RUN pecl install redis && docker-php-ext-enable redis
 
 # php-gd    
-RUN apk add --no-cache --update zlib-dev libjpeg-turbo-dev libpng-dev freetype-dev \
+RUN apk add --no-cache zlib-dev libjpeg-turbo-dev libpng-dev freetype-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
