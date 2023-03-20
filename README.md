@@ -8,7 +8,9 @@ Use o seguinte comando para fazer a instalação da aplicação:
 docker-compose up --build
 ```
 
-> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do _Laravel_ através do **composer**. Variáveis de ambiente do Laravel podem ser alteradas através do arquivo `.env.laravel` que se encontram na raiz do projeto.
+> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do _Laravel_ através do **composer**. 
+
+> Variáveis de ambiente do Laravel podem ser alteradas através do arquivo `.env.laravel` que se encontram na raiz do projeto.
 
 
 Para realizar a instalação das dependencias do _Laravel_, utilize o seguinte comando:
@@ -36,7 +38,7 @@ http://localhost/api/pacientes
 E o seguinte comando para realizar a importação de pacientes:
 
 ```sh
-curl -X POST -F 'arquivo=@exemplo.json' http://localhost/api/cpf?cpf=12345678900
+curl -X POST -F 'arquivo=@exemplo.csv' http://localhost/api/import
 ```
 
 > **Observação**: `exemplo.json` é um arquivo de exemplo para importação de pacientes.
