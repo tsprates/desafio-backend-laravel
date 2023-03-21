@@ -9,7 +9,7 @@ Use o seguinte comando para fazer a instalação da aplicação:
 docker-compose up --build
 ```
 
-> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências através do **composer**. 
+> Ao iniciar o projeto pela primeira vez é necessário instalar as dependências através do **Composer**. 
 
 Para realizar a instalação das dependências do _Laravel_, utilize o seguinte comando:
 
@@ -23,7 +23,7 @@ E o seguinte para migração das tabelas utilizadas pelo _PostgreSQL_:
 docker-compose exec -it php php artisan migrate
 ```
 
-> **Observação**: Os arquivos de configurações do **supervisor** e **NGINX** podem ser encontradas dentro da pasta `conf` na raiz do projeto. Variáveis de ambiente do Laravel podem ser alteradas através do arquivo `.env.laravel` que se encontram na raiz do projeto.
+> Os arquivos de configurações do **Supervisor** e **NGINX** podem ser encontradas dentro da pasta `conf`, na raiz do projeto. Variáveis de ambiente do Laravel podem ser alteradas por meio do arquivo `.env.laravel` na raiz do projeto.
 
 
 ### API de Pacientes
@@ -49,7 +49,7 @@ Para realizar uma consultada de determinado CPF, utilize a seguinte URL:
 curl http://localhost/api/cpf?cpf=123.456.789-00
 ```
 
-> **Observação**: A formatacão com pontuação do CPF é _opcional_.
+> A formatacão com pontuação do CPF é _opcional_.
 
 
 ### ViaCep
