@@ -1,5 +1,6 @@
 # Projeto
 
+
 ### Como usar
 
 Use o seguinte comando para fazer a instalação da aplicação:
@@ -8,40 +9,37 @@ Use o seguinte comando para fazer a instalação da aplicação:
 docker-compose up --build
 ```
 
-> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências do _Laravel_ através do **composer**. 
+> **Observação**: Ao iniciar o projeto pela primeira vez é necessário instalar as dependências através do **composer**. 
 
-> Variáveis de ambiente do Laravel podem ser alteradas através do arquivo `.env.laravel` que se encontram na raiz do projeto.
-
-
-Para realizar a instalação das dependencias do _Laravel_, utilize o seguinte comando:
+Para realizar a instalação das dependências do _Laravel_, utilize o seguinte comando:
 
 ```sh
 docker-compose exec -it php composer install
 ```
 
-E o seguinte comando para migração das tabelas utilizadas pelo _PostgreSQL_:
+E o seguinte para migração das tabelas utilizadas pelo _PostgreSQL_:
 
 ```sh
 docker-compose exec -it php php artisan migrate
 ```
 
-> **Observação**: Os arquivos de configurações do **supervisor** e **NGINX** podem ser encontradas na raiz do projeto, dentro da pasta `conf`.
+> **Observação**: Os arquivos de configurações do **supervisor** e **NGINX** podem ser encontradas dentro da pasta `conf` na raiz do projeto. Variáveis de ambiente do Laravel podem ser alteradas através do arquivo `.env.laravel` que se encontram na raiz do projeto.
+
 
 ### API de Pacientes
 
-Os dados do paciente podem ser _criados_, _alterados_ e _deletados_ através da seguinte URL:
+Os dados do paciente podem ser _criados_, _alterados_ e _deletados_ por meio da seguinte URL:
 
 ```
 http://localhost/api/pacientes
 ```
 
-E o seguinte comando para realizar a importação de pacientes:
+Exemplo de importação de pacientes, onde `exemplo.json` é um arquivo de exemplo:
 
 ```sh
 curl -X POST -F 'arquivo=@exemplo.csv' http://localhost/api/import
 ```
 
-> **Observação**: `exemplo.json` é um arquivo de exemplo para importação de pacientes.
 
 ### Consulta de CPF
 
@@ -52,6 +50,7 @@ curl http://localhost/api/cpf?cpf=123.456.789-00
 ```
 
 > **Observação**: A formatacão com pontuação do CPF é _opcional_.
+
 
 ### ViaCep
 
@@ -78,13 +77,15 @@ Exemplo:
 }
 ```
 
+
 ### Elasticsearch
 
-Para realizar buscas no _Elasticsearch_ é necessário utilizar a seguinte URL. O `{termo}` na URL deve ser substituído com termo a ser buscado.
+Para realizar buscas no _Elasticsearch_ é necessário utilizar a seguinte URL. O `{termo}` na URL deve ser substituído pelo termo a ser buscado.
 
 ```sh
 curl http://localhost/api/search/{texto}
 ```
+
 
 ### Testes
 
