@@ -23,7 +23,7 @@ E o seguinte para migração das tabelas utilizadas pelo _PostgreSQL_:
 docker-compose exec -it php php artisan migrate
 ```
 
-> Os arquivos de configurações do **Supervisor** e **NGINX** podem ser encontradas dentro da pasta `conf`, na raiz do projeto. Variáveis de ambiente do Laravel podem ser alteradas por meio do arquivo `.env.laravel` na raiz do projeto.
+> Os arquivos de configurações do **Supervisor** e **NGINX** podem ser encontradas dentro da pasta `conf`, na raiz do projeto. Variáveis de ambiente do Laravel podem ser alteradas por meio do arquivo `.env.laravel` encontrado na raiz do projeto.
 
 
 ### API de Pacientes
