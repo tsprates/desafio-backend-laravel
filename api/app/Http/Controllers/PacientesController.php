@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PacienteRequest;
 use App\Http\Requests\StorePacienteRequest;
 use App\Http\Requests\UpdatePacienteRequest;
 use App\Jobs\ImportaPacientesCsv;
 use App\Models\Paciente;
 use Elastic\Elasticsearch\Client;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
