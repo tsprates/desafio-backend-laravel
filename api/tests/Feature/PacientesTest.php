@@ -38,8 +38,7 @@ class PacientesTest extends TestCase
         $enderecoArray = Endereco::factory()->make()->toArray();
 
         $response = $this->post('api/pacientes', [...$pacienteArray, ...$enderecoArray]);
-        $response->assertCreated()
-            ->assertJson(['status' => true]);
+        $response->assertCreated();
     }
 
     public function test_atualiza_paciente()
@@ -72,8 +71,7 @@ class PacientesTest extends TestCase
         $paciente['cpf'] = '111.111.111-11';
 
         $response = $this->post('api/pacientes', [...$pacienteArray, ...$enderecoArray]);
-        $response->assertStatus(422)
-            ->assertJson(['status' => false]);
+        $response->assertStatus(422);
     }
 
     public function test_tenta_criar_paciente_com_cns_invalido()
@@ -87,7 +85,6 @@ class PacientesTest extends TestCase
         $paciente['cns'] = '12345';
 
         $response = $this->post('api/pacientes', [...$pacienteArray, ...$enderecoArray]);
-        $response->assertStatus(422)
-            ->assertJson(['status' => false]);
+        $response->assertStatus(422);
     }
 }

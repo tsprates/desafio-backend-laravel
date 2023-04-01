@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePacienteRequest;
 use App\Http\Requests\UpdatePacienteRequest;
+use App\Http\Resources\PacienteResource;
 use App\Jobs\ImportaPacientesCsv;
 use App\Models\Paciente;
 use Elastic\Elasticsearch\Client;
@@ -23,10 +24,7 @@ class PacientesController extends Controller
     {
         $validator = Validator::make($request->all(), (new StorePacienteRequest())->rules());
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = $request->all();
@@ -35,27 +33,21 @@ class PacientesController extends Controller
         }
 
         $paciente = Paciente::create($data);
-        $endereco = $paciente->endereco()->create($data);
+        $paciente->endereco()->create($data);
 
-        return response()->json([
-            'status' => true,
-            'data' => [...$paciente->toArray(), ...$endereco->toArray()],
-        ], Response::HTTP_CREATED);
+        return response()->json(new PacienteResource($paciente), Response::HTTP_CREATED);
     }
 
-    public function show(int $id)
+    public function show(Paciente $paciente)
     {
-        return Paciente::with('endereco')->find($id);
+        return new PacienteResource($paciente);
     }
 
     public function update(Request $request, Paciente $paciente)
     {
         $validator = Validator::make($request->all(), (new UpdatePacienteRequest($paciente))->rules());
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = $request->all();
@@ -65,20 +57,28 @@ class PacientesController extends Controller
         }
 
         $paciente->update($data);
-        $paciente->endereco->update($data);
+        $paciente->endereco()->update($request->only(
+            'endereco',
+            'numero',
+            'bairro',
+            'complemento',
+            'cidade',
+            'estado'
+        ));
 
-        return response()->json([
-            'status' => true,
-            'data' => [...$paciente->toArray(), ...$paciente->endereco->toArray()],
-        ]);
+        return response()->json(new PacienteResource($paciente));
     }
 
     public function destroy(Paciente $paciente)
     {
         if ($paciente->endereco()->delete() && $paciente->delete()) {
-            return response()->json(['status' => true]);
+            return response()->json(new PacienteResource($paciente));
         }
-        return response()->json(['status' => false], Response::HTTP_BAD_REQUEST);
+
+        return response()->json(
+            new PacienteResource($paciente),
+            Response::HTTP_BAD_REQUEST
+        );
     }
 
     public function getByCpf(Request $request)
@@ -94,21 +94,18 @@ class PacientesController extends Controller
             ->get();
     }
 
-    /**
-     * Importa o arquivo CSV de pacientes.
-     */
     public function importCsv(Request $request)
     {
         if (!$request->file('arquivo')) {
             return response()
-                ->json(['status' => false, 'data' => 'csv não encontrado'], 400);
+                ->json(['error' => 'CSV não encontrado'], 400);
         }
 
         $path = Storage::put('public/csv', $request->file('arquivo'));
 
-        dispatch(new ImportaPacientesCsv(basename($path)));
+        ImportaPacientesCsv::dispatch(basename($path));
 
-        return response()->json(['status' => true]);
+        return response(['messagem' => 'processando']);
     }
 
     public function search(Client $elasticsearchClient, string $query)
